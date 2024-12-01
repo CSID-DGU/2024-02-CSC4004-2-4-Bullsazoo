@@ -1,5 +1,7 @@
 import os
 from pathlib import Path
+
+import MIDDLEWARE
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -41,19 +43,29 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'drf_yasg',
     'rest_framework',
-    'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
 ]
+
+MIDDLEWARE.insert(0, 'corsheaders.middleware.CorsMiddleware')
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 SWAGGER_SETTINGS = {
     'USE_SESSION_AUTH': False,
     'SECURITY_DEFINITIONS': {
         'Token': {
             'type': 'apiKey',
-            'name': 'bootcamp',
+            'name': 'bullsazo',
             'in': 'header'
         }
     },
+}
+
+# Django 기본 세션 기반 인증 활성화
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    ),
 }
 
 MIDDLEWARE = [

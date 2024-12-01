@@ -1,0 +1,23 @@
+# Yolov5 1차 학습 기록
+
+## 학습 데이터
+- 데이터셋: COCO (Custom Dataset)
+- 총 이미지 수: 475장 (Train: 445, val: 30)
+- 클래스: 12개 (면)
+
+## 학습 설정
+- 모델: yolov5s
+- Epochs: 20
+- Batch Size: 16
+- Optimizer: SGD
+- Learning Rate: 0.01
+
+## 결과
+- Precision: 0.85
+- Recall: 0.80
+- mAP@0.5: 0.82
+- mAP@0.5:0.95: 0.68
+
+## 주의사항
+- 학습한 데이터는 특정 프로젝트 목적에 맞춰 커스터마이징됨.
+- 모델 파일은 `best.pt`로 저장됨.
