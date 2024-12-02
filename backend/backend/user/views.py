@@ -12,47 +12,34 @@ def swagger_auto_schema(operation_description, request_body, responses):
 
 
 class RegisterView(APIView):
-    @swagger_auto_schema(
-        operation_description="회원가입 API",
-        request_body=UserSerializer,
-        responses={
-            201: openapi.Response("회원가입 성공"),
-            400: openapi.Response("잘못된 요청"),
-        },
-    )
-
+    """회원가입 (POST)"""
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"message": "회원가입이 완료되었습니다."}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        personal_id = request.data.get("personal_id")
+        if not personal_id:
+            return Response({"error": "personal_id는 필수입니다"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # 이미 존재하는 사용자 확인
+        if User.objects.filter(personal_id=personal_id).exists():
+            return Response({"error": "이미 존재하는 사용자입니다"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # 사용자 생성
+        try:
+            user = User.objects.create(personal_id=personal_id)
+            return Response({"message": "사용자가 성공적으로 등록되었습니다", "user_id": user.user_id}, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class LoginView(APIView):
-    @swagger_auto_schema(
-        operation_description="로그인 API",
-        request_body=openapi.Schema(
-            type=openapi.TYPE_OBJECT,
-            properties={
-                "username": openapi.Schema(type=openapi.TYPE_STRING, description="사용자 이름 (ID)"),
-                "personal_id": openapi.Schema(type=openapi.TYPE_STRING, description="개인식별 ID (비밀번호)"),
-            },
-        ),
-        responses={
-            200: openapi.Response("로그인 성공"),
-            401: openapi.Response("로그인 실패"),
-        },
-    )
-    def post(self, request):
-        username = request.data.get('username')  # 사용자 이름(ID)
-        personal_id = request.data.get('personal_id')  # 개인식별 ID(PW)
+    """로그인 (GET)"""
+    def get(self, request):
+        personal_id = request.query_params.get("personal_id")
+        if not personal_id:
+            return Response({"error": "personal_id는 필수입니다"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # 사용자 인증
-        user = authenticate(username=username, password=personal_id)
-        if user:
-            # 세션 생성 및 로그인 처리
-            login(request, user)
-            return Response({"message": "로그인 성공"}, status=status.HTTP_200_OK)
-
-        return Response({"message": "로그인 정보가 올바르지 않습니다."}, status=status.HTTP_401_UNAUTHORIZED)
-
+        # 사용자 존재 여부 확인
+        try:
+            user = User.objects.get(personal_id=personal_id)
+            return Response({"message": "로그인 성공", "user_id": user.user_id}, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response({"error": "유효하지 않은 personal_id입니다"}, status=status.HTTP_404_NOT_FOUND)

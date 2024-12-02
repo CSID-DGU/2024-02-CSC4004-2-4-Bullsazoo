@@ -11,11 +11,11 @@ load_dotenv()
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DJANGO_DB_NAME', 'default_db_name'),
-        'USER': os.environ.get('DJANGO_DB_USER', 'default_user'),
-        'PASSWORD': os.environ.get('DJANGO_DB_PASSWORD', 'default_password'),
-        'HOST': os.environ.get('DJANGO_DB_HOST', 'localhost'),
-        'PORT': os.environ.get('DJANGO_DB_PORT', '5432'),
+        'NAME': os.environ.get('DJANGO_DB_NAME', 'help_people'),  # DB 이름
+        'USER': os.environ.get('DJANGO_DB_USER', 'postgres'),     # 사용자 이름
+        'PASSWORD': os.environ.get('DJANGO_DB_PASSWORD', 'Tlswodyd0117!'),  # 비밀번호
+        'HOST': os.environ.get('DJANGO_DB_HOST', 'localhost'),    # 호스트
+        'PORT': os.environ.get('DJANGO_DB_PORT', '5432'),         # 포트
     }
 }
 
