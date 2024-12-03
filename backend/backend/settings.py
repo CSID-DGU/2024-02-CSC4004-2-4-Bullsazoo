@@ -11,9 +11,9 @@ load_dotenv()
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DJANGO_DB_NAME', 'default_db_name'),
-        'USER': os.environ.get('DJANGO_DB_USER', 'default_user'),
-        'PASSWORD': os.environ.get('DJANGO_DB_PASSWORD', 'default_password'),
+        'NAME': os.environ.get('DJANGO_DB_NAME', 'help_people'),
+        'USER': os.environ.get('DJANGO_DB_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DJANGO_DB_PASSWORD', 'Tlswodyd0117!'),
         'HOST': os.environ.get('DJANGO_DB_HOST', 'localhost'),
         'PORT': os.environ.get('DJANGO_DB_PORT', '5432'),
     }
@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'rest_framework',
     'corsheaders',
-    'user',
+    'backend.user',
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True

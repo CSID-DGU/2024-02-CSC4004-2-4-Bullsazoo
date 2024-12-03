@@ -1,15 +1,11 @@
-from rest_framework.schemas import openapi
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate, login
 from .models import User
 from .serializers import UserSerializer
-
-
-def swagger_auto_schema(operation_description, request_body, responses):
-    pass
-
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 class RegisterView(APIView):
     @swagger_auto_schema(
@@ -20,7 +16,6 @@ class RegisterView(APIView):
             400: openapi.Response("잘못된 요청"),
         },
     )
-
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
@@ -35,7 +30,7 @@ class LoginView(APIView):
             type=openapi.TYPE_OBJECT,
             properties={
                 "username": openapi.Schema(type=openapi.TYPE_STRING, description="사용자 이름 (ID)"),
-                "personal_id": openapi.Schema(type=openapi.TYPE_STRING, description="개인식별 ID (비밀번호)"),
+                "password": openapi.Schema(type=openapi.TYPE_STRING, description="비밀번호"),
             },
         ),
         responses={
@@ -44,14 +39,13 @@ class LoginView(APIView):
         },
     )
     def post(self, request):
-        username = request.data.get('username')  # 사용자 이름(ID)
-        personal_id = request.data.get('personal_id')  # 개인식별 ID(PW)
+        username = request.data.get('username')  # 사용자 이름
+        password = request.data.get('password')  # 비밀번호
 
         # 사용자 인증
-        user = authenticate(username=username, password=personal_id)
+        user = authenticate(username=username, password=password)
         if user:
-            # 세션 생성 및 로그인 처리
-            login(request, user)
+            login(request, user)  # 세션 생성 및 로그인
             return Response({"message": "로그인 성공"}, status=status.HTTP_200_OK)
 
         return Response({"message": "로그인 정보가 올바르지 않습니다."}, status=status.HTTP_401_UNAUTHORIZED)
