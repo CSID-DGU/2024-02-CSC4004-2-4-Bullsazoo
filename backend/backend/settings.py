@@ -15,16 +15,17 @@ DATABASES = {
         'NAME': os.environ.get('DJANGO_DB_NAME', 'help_people'),
         'USER': os.environ.get('DJANGO_DB_USER', 'postgres'),
         'PASSWORD': os.environ.get('DJANGO_DB_PASSWORD', 'Tlswodyd0117!'),
-        'HOST': os.environ.get('DJANGO_DB_HOST', '192.168.0.5'),
+        'HOST': os.environ.get('DJANGO_DB_HOST', '172.30.1.98'),  # 여기를 변경
         'PORT': os.environ.get('DJANGO_DB_PORT', '5432'),
     }
 }
 
 
+
 SECRET_KEY = 'django-insecure-r7j)h*^9bna4)mljk%-!t-ckydnv9gl#w)$2c8&edj$b$$oa3n'
 
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
