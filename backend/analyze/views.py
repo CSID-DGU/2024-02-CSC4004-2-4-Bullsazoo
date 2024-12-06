@@ -12,7 +12,6 @@ from .models import AnalyzeResult
 from .yolov5_handler import detect_objects
 from .serializers import AnalyzeResultSerializer, DetectionSerializer, ImageUploadSerializer
 from rest_framework import serializers
-from analyze.models import AnalyzeResult
 
 
 # 저장된 데이터 조회
