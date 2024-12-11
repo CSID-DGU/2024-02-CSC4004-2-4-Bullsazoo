@@ -1,17 +1,21 @@
 from rest_framework import serializers
-from .models import Users
+from .models import User
 
-# 회원가입용 Serializer
-class UserSignupSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Users  # Users 모델을 사용
-        fields = ['user_id', 'personal_id']  # 회원가입 시 필요한 필드들 (이름과 개인식별 ID)
+        model = User
+        fields = ['name', 'personal_id']
 
-    def create(self, validated_data):
-        # 개인식별 ID로 사용자를 생성
-        user = Users.objects.create(**validated_data)
-        return user
+    def validate_personal_id(self, value):
+        if not value.isalnum():
+            raise serializers.ValidationError("개인 식별 ID는 영문자와 숫자만 포함할 수 있습니다.")
+        return value
 
-# 로그인용 Serializer
-class UserLoginSerializer(serializers.Serializer):
-    personal_id = serializers.CharField(max_length=100)  # personal_id를 받기 위한 필드
+class LoginSerializer(serializers.Serializer):
+    personal_id = serializers.CharField(max_length=20)
+
+    def validate(self, data):
+        personal_id = data.get('personal_id')
+        if not User.objects.filter(personal_id=personal_id).exists():
+            raise serializers.ValidationError("해당 개인 식별 ID가 존재하지 않습니다.")
+        return data

@@ -1,10 +1,7 @@
 from django.urls import path
-from .views import UserSignupView, UserLoginView
+from .views import RegisterView, LoginView
 
 urlpatterns = [
-    # 회원가입 API URL
-    path('signup/', UserSignupView.as_view(), name='user_signup'),
-
-    # 로그인 API URL
-    path('login/', UserLoginView.as_view(), name='user_login'),
+    path('register/', RegisterView.as_view(), name='register'),  # 회원가입 엔드포인트
+    path('login/', LoginView.as_view(), name='login'),           # 로그인 엔드포인트
 ]
