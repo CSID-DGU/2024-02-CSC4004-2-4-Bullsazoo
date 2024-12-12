@@ -1,7 +1,6 @@
 from django.urls import path
-from .views import YoloImageAnalysisView
+from .views import ObjectDetectionView
 
 urlpatterns = [
-    path('analyze/', YoloImageAnalysisView.as_view(), name='analyze-image'),
+    path('detect/', ObjectDetectionView.as_view(), name='object-detection'),
 ]
-
